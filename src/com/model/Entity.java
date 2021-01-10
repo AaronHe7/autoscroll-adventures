@@ -1,9 +1,10 @@
 package com.model;
 
 import java.awt.Graphics;
+import java.awt.Shape;
 
 public abstract class Entity {
-	protected float x, y, width, height, size;
+	protected float x, y, width, height;
 	// Velocities
 	protected float vx = 0, vy = 0;
 	// Accelerations
@@ -34,12 +35,20 @@ public abstract class Entity {
 		this.y = y;
 	}
 
-	public float getSize() {
-		return size;
+	public float getWidth() {
+		return width;
 	}
 
-	public void setSize(float size) {
-		this.size = size;
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
 	}
 
 	public float getVx() {
@@ -80,5 +89,9 @@ public abstract class Entity {
 
 	public void setId(EntityId id) {
 		this.id = id;
+	}
+	
+	public Shape getShape() {
+		return null;
 	}
 }
