@@ -5,16 +5,22 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import com.model.Level;
+import com.model.Model;
+import com.model.entity.Player;
+
 
 public class View extends Canvas implements Runnable {
 	private static final long serialVersionUID = -6520493287321791823L;
 	
 	private Thread thread;
+	private Model model;
 	private boolean running = false;
 	private static final int HEIGHT = 600, WIDTH = HEIGHT * 16/9;
 
-	public View() {
+	public View(Model model) {
 		new Window(WIDTH, HEIGHT, "Autoscroll Adventures", this);
+		this.model = model;
 	}
 	
 
@@ -49,7 +55,7 @@ public class View extends Canvas implements Runnable {
 			delta += (now - lastTime)/ns;
 			lastTime = now;
 			while (delta >= 1) {
-				tick();
+				update();
 				delta--;
 			}
 			if (running) {
@@ -58,15 +64,15 @@ public class View extends Canvas implements Runnable {
 			frames++;
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				System.out.println("FPS: " + frames);
+				//System.out.println("FPS: " + frames);
 				frames = 0;
 			}
 		}
 		stop();
 	}
 	
-	private void tick() {
-		
+	private void update() {
+		model.getCurrentLevel().update();
 	}
 	
 	private void render() {
@@ -78,6 +84,7 @@ public class View extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.white);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		model.getCurrentLevel().render(g);
 		
 		g.dispose();
 		bs.show();

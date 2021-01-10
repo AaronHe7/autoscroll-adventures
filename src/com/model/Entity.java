@@ -3,16 +3,16 @@ package com.model;
 import java.awt.Graphics;
 
 public abstract class Entity {
-	protected float x, y, size;
-	// velocities
+	protected float x, y, width, height, size;
+	// Velocities
 	protected float vx = 0, vy = 0;
+	// Accelerations
 	protected float ax = 0, ay = 0;
 	protected EntityId id;
 	
-	public Entity(float x, float y, float size) {
+	public Entity(float x, float y) {
 		this.x = x;
 		this.y = y;
-		this.size = size;
 	}
 	
 	public abstract void update();
