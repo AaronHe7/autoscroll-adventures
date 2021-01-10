@@ -35,8 +35,9 @@ public class Level {
 	}
 	
 	public void jump() {
-		this.player.setAy(0.2f);
-		this.player.setVy(-8);
+		if (player.isOnGround()) {
+			player.setVy(-8);
+		}
 	}
 	
 	public ArrayList<Entity> getEntities() {
