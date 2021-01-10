@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.Area;
 
 import com.model.Entity;
 import com.model.EntityId;
@@ -35,7 +35,6 @@ public class Player extends Entity {
 		vx += ax;
 		y += vy + ay/2;
 		vy += ay;
-		System.out.println(y);
 		doCollision();
 		if (onGround) {
 			ay = 0;
@@ -54,12 +53,10 @@ public class Player extends Entity {
 					// Above platform. Check if player's lower edge is above the entity's upper edge.
 					if (py + height <= e.getY()) {
 						onGround = true;
-						System.out.println("top");
 						y = e.getY() - height;
 					} 
 					// Below platform. Check if player's upper edge is below the entity's lower edge.
 					else if (py >= e.getY() + e.getHeight()) {
-						System.out.println("bot");
 						y = e.getY() + e.getHeight();
 					} 
 					// Player hits side of platform and dies.
@@ -67,6 +64,18 @@ public class Player extends Entity {
 						x = spawnX;
 						y = spawnY;
 					}
+				}
+			} else if (e.getId() == EntityId.Spike) {
+				if (!collision) {
+					continue;
+				}
+				// If collision boxes intersect, test if their areas overlap
+				Area area1 = new Area(getShape());
+				Area area2 = new Area(e.getShape());
+				area1.intersect(area2);
+				if (!area1.isEmpty()) {
+					x = spawnX;
+					y = spawnY;
 				}
 			}
 		}
@@ -78,7 +87,7 @@ public class Player extends Entity {
 	}
 
 	public Shape getShape() {
-		return (Shape) new Rectangle((int)x, (int)y, (int)width, (int)height);
+		return new Rectangle((int)x, (int)y, (int)width, (int)height);
 	}
 	
 	public boolean isOnGround() {

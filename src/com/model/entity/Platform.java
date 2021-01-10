@@ -2,6 +2,7 @@ package com.model.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 
