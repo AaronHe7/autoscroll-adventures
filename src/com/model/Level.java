@@ -4,12 +4,14 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import com.model.entity.Player;
+import com.settings.Settings;
 import com.view.LevelRenderer;
 
 public class Level {
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Player player;
 	private LevelRenderer levelRenderer;
+	private float endX = 10000;
 	
 	public Level() {
 		levelRenderer = new LevelRenderer(this);
@@ -36,7 +38,7 @@ public class Level {
 	
 	public void jump() {
 		if (player.isOnGround()) {
-			player.setVy(-8);
+			player.setVy(Settings.jumpVelocity);
 		}
 	}
 	
@@ -46,5 +48,13 @@ public class Level {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public float getEndX() {
+		return endX;
+	}
+	
+	public void setEndX(float x) {
+		endX = x;
 	}
 }

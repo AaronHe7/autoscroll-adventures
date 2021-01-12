@@ -5,9 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import com.model.Level;
 import com.model.Model;
-import com.model.entity.Player;
+import com.settings.Settings;
 
 
 public class View extends Canvas implements Runnable {
@@ -45,7 +44,7 @@ public class View extends Canvas implements Runnable {
 		this.requestFocus();
 		// Standard game loop
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 60;
+		double amountOfTicks = Settings.FPS;
 		double ns = 1000000000/amountOfTicks;
 		double delta =  0;
 		long timer = System.currentTimeMillis();

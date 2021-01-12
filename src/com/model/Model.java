@@ -10,10 +10,13 @@ public class Model {
 	public Model() {
 		currentLevel = new Level();
 		currentLevel.addEntity(new Player(0, -70, currentLevel));
-		currentLevel.addEntity(new Platform(-50, 50, 5000, 40));
-		currentLevel.addEntity(new Platform(-50, -250, 1000000000, 40));
-		currentLevel.addEntity(new Spike(400, 0));
-		currentLevel.addEntity(new Spike(450, 0));
+		currentLevel.addEntity(new Platform(0, 50, currentLevel.getEndX(), 40));
+		currentLevel.addEntity(new Platform(0, -350, currentLevel.getEndX(), 40));
+		for (int i = 1; i < 100; i++) {
+			currentLevel.addEntity(new Spike(i * 500, 0));
+			currentLevel.addEntity(new Spike(i * 500 + 50, 0));
+			currentLevel.addEntity(new Spike(i * 500 + 100, 0));
+		}
 	}
 
 	public Level getCurrentLevel() {

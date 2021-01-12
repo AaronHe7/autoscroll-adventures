@@ -9,6 +9,7 @@ import java.awt.geom.Area;
 import com.model.Entity;
 import com.model.EntityId;
 import com.model.Level;
+import com.settings.Settings;
 
 public class Player extends Entity {
 	Level level;
@@ -22,10 +23,9 @@ public class Player extends Entity {
 		spawnX = x;
 		spawnY = y;
 		this.level = level;
-		this.width = 50;
-		this.height = 50;
+		this.width = this.height = Settings.playerSize;
 		this.id = EntityId.Player;
-		vx = 4;
+		vx = Settings.scrollSpeed;
 	}
 
 	public void update() {
@@ -39,7 +39,7 @@ public class Player extends Entity {
 		if (onGround) {
 			ay = 0;
 		} else {
-			ay = 0.2f;
+			ay = Settings.gravity;
 		}
 	}
 
