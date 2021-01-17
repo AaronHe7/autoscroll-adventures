@@ -1,25 +1,25 @@
 package com.model;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.model.entity.Platform;
 import com.model.entity.Player;
 import com.settings.Settings;
-import com.view.LevelRenderer;
 import com.view.View;
 
-public class Level {
+public class Level implements Serializable {
+	private static final long serialVersionUID = 5534080263939263275L;
+	
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private ArrayList<Entity> entitiesCopy = new ArrayList<Entity>();
 	private Player player;
-	private LevelRenderer levelRenderer;
 	private float endX = 0;
 	// The top-left location of the camera
 	float cameraX, cameraY;
 	
 	public Level() {
-		levelRenderer = new LevelRenderer(this);
 		addEntity(new Player(0, -Settings.tileSize, this));
 		addEntity(new Platform(-1000, 0, 3000, 1000));
 		updateEntitiesCopy();
@@ -50,10 +50,6 @@ public class Level {
 		}
 	}
 
-	public void render(Graphics g) {
-		levelRenderer.render(g);
-	}
-	
 	public void jump() {
 		if (player.isOnGround()) {
 			player.setVy(Settings.jumpVelocity);

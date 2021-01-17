@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import com.filestream.LevelSaver;
 import com.model.Model;
 
 public class Controller {
@@ -36,6 +37,10 @@ public class Controller {
 		} else if (key == KeyEvent.VK_U) { 
 			// temp
 			model.getCurrentLevel().removeLastEntity();
+		} else if (key == KeyEvent.VK_ESCAPE) {
+			LevelSaver ls = new LevelSaver();
+			ls.saveLevel(model.getCurrentLevel(), "level 1");
+			System.exit(1);
 		}
 	}
 

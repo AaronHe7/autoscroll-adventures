@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 
 import com.model.Entity;
 import com.model.Level;
-import com.settings.Settings;
 
 public class LevelRenderer {
 	Level level;

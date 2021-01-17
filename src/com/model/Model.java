@@ -3,13 +3,15 @@ package com.model;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import com.model.entity.Platform;
-import com.model.entity.Spike;
+import com.filestream.LevelLoader;
+import com.view.LevelRenderer;
 
 public class Model {
 	private Level currentLevel = null;
 	private LevelEditor levelEditor = null;
+	private LevelRenderer levelRenderer = null;
 	private STATE state = STATE.levelEditor;
+	public int tick = 0;
 	public enum STATE {
 		menu(),
 		level(),
@@ -17,8 +19,11 @@ public class Model {
 	}
 
 	public Model() {
-		currentLevel = new Level();
+		LevelLoader ll = new LevelLoader();
+		currentLevel = ll.loadLevel("level 1");
+		//currentLevel = new Level();
 		levelEditor = new LevelEditor(currentLevel);
+		levelRenderer = new LevelRenderer(currentLevel);
 	}
 
 	public Level getCurrentLevel() {
@@ -33,13 +38,16 @@ public class Model {
 		if (state == STATE.level) {
 			currentLevel.update();
 		}
+		tick = (tick + 1) % (int)1e9;
+		if (state == STATE.levelEditor && tick % 200 == 0) {
+		}
 	}
 
 	public void render(Graphics g) {
 		if (state == STATE.level) {
-			currentLevel.render(g);
+			levelRenderer.render(g);
 		} else if (state == STATE.levelEditor) {
-			currentLevel.render(g);
+			levelRenderer.render(g);
 			levelEditor.render(g);
 		}
 	}

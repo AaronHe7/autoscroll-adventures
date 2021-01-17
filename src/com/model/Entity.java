@@ -2,8 +2,9 @@ package com.model;
 
 import java.awt.Graphics;
 import java.awt.Shape;
+import java.io.Serializable;
 
-public abstract class Entity {
+public abstract class Entity implements Serializable {
 	protected float x, y, width, height;
 	// Velocities
 	protected float vx = 0, vy = 0;
