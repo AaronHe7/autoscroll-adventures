@@ -15,7 +15,9 @@ public class View extends Canvas implements Runnable {
 	private Thread thread;
 	private Model model;
 	private boolean running = false;
-	private static final int HEIGHT = 600, WIDTH = HEIGHT * 16/9;
+	public static final int HEIGHT = 800;
+
+	public static final int WIDTH = HEIGHT * 16/9;
 
 	public View(Model model) {
 		new Window(WIDTH, HEIGHT, "Autoscroll Adventures", this);
@@ -71,7 +73,7 @@ public class View extends Canvas implements Runnable {
 	}
 	
 	private void update() {
-		model.getCurrentLevel().update();
+		model.update();
 	}
 	
 	private void render() {
@@ -83,7 +85,7 @@ public class View extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.white);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		model.getCurrentLevel().render(g);
+		model.render(g);
 		
 		g.dispose();
 		bs.show();

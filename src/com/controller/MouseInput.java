@@ -12,10 +12,10 @@ public class MouseInput extends MouseAdapter {
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		controller.registerMouseClick();
+		controller.registerMouseInput(e);
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		controller.registerMouseRelease();
+		controller.registerMouseRelease(e);
 	}
 }

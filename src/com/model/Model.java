@@ -1,25 +1,58 @@
 package com.model;
 
+import java.awt.Graphics;
+import java.awt.Point;
+
 import com.model.entity.Platform;
-import com.model.entity.Player;
 import com.model.entity.Spike;
 
 public class Model {
 	private Level currentLevel = null;
+	private LevelEditor levelEditor = null;
+	private STATE state = STATE.levelEditor;
+	public enum STATE {
+		menu(),
+		level(),
+		levelEditor()
+	}
 
 	public Model() {
 		currentLevel = new Level();
-		currentLevel.addEntity(new Player(0, -70, currentLevel));
-		currentLevel.addEntity(new Platform(0, 50, currentLevel.getEndX(), 40));
-		currentLevel.addEntity(new Platform(0, -350, currentLevel.getEndX(), 40));
-		for (int i = 1; i < 100; i++) {
-			currentLevel.addEntity(new Spike(i * 500, 0));
-			currentLevel.addEntity(new Spike(i * 500 + 50, 0));
-			currentLevel.addEntity(new Spike(i * 500 + 100, 0));
-		}
+		levelEditor = new LevelEditor(currentLevel);
 	}
 
 	public Level getCurrentLevel() {
 		return currentLevel;
+	}
+	
+	public STATE getState() {
+		return state;
+	}
+
+	public void update() {
+		if (state == STATE.level) {
+			currentLevel.update();
+		}
+	}
+
+	public void render(Graphics g) {
+		if (state == STATE.level) {
+			currentLevel.render(g);
+		} else if (state == STATE.levelEditor) {
+			currentLevel.render(g);
+			levelEditor.render(g);
+		}
+	}
+	
+	public void setState(STATE state) {
+		this.state = state;
+	}
+
+	public void registerClick(Point p) {
+		if (state == STATE.levelEditor) {
+			levelEditor.registerClick(p);
+		} else {
+			currentLevel.jump();
+		}
 	}
 }

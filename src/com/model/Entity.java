@@ -16,8 +16,21 @@ public abstract class Entity {
 		this.y = y;
 	}
 	
+	public Entity(Entity e) {
+		this.x = e.x;
+		this.y = e.y;
+		this.vx = e.vx;
+		this.vy = e.vy;
+		this.ax = e.ax;
+		this.ay = e.ay;
+		this.width = e.width;
+		this.height = e.height;
+		this.id = e.id;
+	}
+	
 	public abstract void update();
 	public abstract void render(Graphics g);
+	public abstract Entity copy();
 
 	public float getX() {
 		return x;

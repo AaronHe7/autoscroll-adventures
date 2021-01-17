@@ -16,8 +16,10 @@ public class KeyInput extends KeyAdapter {
 		if (key == KeyEvent.VK_ESCAPE) {
 			System.exit(1);
 		}
+		controller.registerKeyInput(e);
 	}
-
+	
 	public void keyReleased(KeyEvent e) {
+		controller.registerKeyRelease(e);
 	}
 }

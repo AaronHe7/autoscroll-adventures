@@ -16,6 +16,10 @@ public class Platform extends Entity {
 		this.height = height;
 		this.id = EntityId.Platform;
 	}
+	
+	public Platform(Platform platform) {
+		super(platform);
+	}
 
 	public void update() {
 		
@@ -24,6 +28,10 @@ public class Platform extends Entity {
 	public void render(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect((int)x, (int)y, (int)width, (int)height);
+	}
+
+	public Entity copy() {
+		return new Platform(this);
 	}
 
 	public Shape getShape() {

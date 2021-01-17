@@ -23,9 +23,16 @@ public class Player extends Entity {
 		spawnX = x;
 		spawnY = y;
 		this.level = level;
-		this.width = this.height = Settings.playerSize;
+		this.width = this.height = Settings.tileSize;
 		this.id = EntityId.Player;
 		vx = Settings.scrollSpeed;
+	}
+	
+	public Player(Player player) {
+		super(player);
+		spawnX = x;
+		spawnY = y;
+		this.level = player.level;
 	}
 
 	public void update() {
@@ -35,17 +42,17 @@ public class Player extends Entity {
 		vx += ax;
 		y += vy + ay/2;
 		vy += ay;
-		doCollision();
 		if (onGround) {
 			ay = 0;
 		} else {
 			ay = Settings.gravity;
 		}
+		doCollision();
 	}
 
 	private void doCollision() {
 		onGround = false;
-		for (Entity e : level.getEntities()) {
+		for (Entity e : level.getEntitiesCopy()) {
 			boolean collision = this.x <= e.getX() + e.getWidth() && this.x + this.width >= e.getX() && this.y <= e.getY() + e.getHeight() && this.y + this.width >= e.getY();
 			if (e.getId() == EntityId.Platform) {
 				if (collision) {
@@ -61,8 +68,7 @@ public class Player extends Entity {
 					} 
 					// Player hits side of platform and dies.
 					else {
-						x = spawnX;
-						y = spawnY;
+						reset();
 					}
 				}
 			} else if (e.getId() == EntityId.Spike) {
@@ -74,10 +80,13 @@ public class Player extends Entity {
 				Area area2 = new Area(e.getShape());
 				area1.intersect(area2);
 				if (!area1.isEmpty()) {
-					x = spawnX;
-					y = spawnY;
+					// Player dies
+					reset();
 				}
 			}
+		}
+		if (x > level.getEndX()) {
+			reset();
 		}
 	}
 	
@@ -92,5 +101,15 @@ public class Player extends Entity {
 	
 	public boolean isOnGround() {
 		return onGround;
+	}
+	
+	public Entity copy() {
+		return new Player(this);
+	}
+	
+	public void reset() {
+		px = x = spawnX;
+		py = y = spawnY;
+		ax = ay = vy = 0;
 	}
 }
