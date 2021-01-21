@@ -12,11 +12,14 @@ import com.model.Level;
 import com.settings.Settings;
 
 public class Player extends Entity {
+	private static final long serialVersionUID = -5313370497235931449L;
+
 	Level level;
 	// Previous x and y
 	private float spawnX, spawnY;
 	private float px, py;
 	private boolean onGround = false;
+	private PlayerType type = PlayerType.jump;
 	
 	public Player(float x, float y, Level level) {
 		super(x, y);
@@ -53,50 +56,38 @@ public class Player extends Entity {
 	private void doCollision() {
 		onGround = false;
 		for (Entity e : level.getEntitiesCopy()) {
-			boolean collision = this.x <= e.getX() + e.getWidth() && this.x + this.width >= e.getX() && this.y <= e.getY() + e.getHeight() && this.y + this.width >= e.getY();
-			if (e.getId() == EntityId.Platform) {
-				if (collision) {
-					vy = 0;
-					// Above platform. Check if player's lower edge is above the entity's upper edge.
-					if (py + height <= e.getY()) {
-						onGround = true;
-						y = e.getY() - height;
-					} 
-					// Below platform. Check if player's upper edge is below the entity's lower edge.
-					else if (py >= e.getY() + e.getHeight()) {
-						y = e.getY() + e.getHeight();
-					} 
-					// Player hits side of platform and dies.
-					else {
-						reset();
-					}
-				}
-			} else if (e.getId() == EntityId.Spike) {
-				if (!collision) {
-					continue;
-				}
-				// If collision boxes intersect, test if their areas overlap
-				Area area1 = new Area(getShape());
-				Area area2 = new Area(e.getShape());
-				area1.intersect(area2);
-				if (!area1.isEmpty()) {
-					// Player dies
-					reset();
-				}
-			}
+			e.handleCollision(this);
 		}
 		if (x > level.getEndX()) {
 			reset();
 		}
 	}
+
+	public void jump() {
+		if (onGround || (type == PlayerType.fly && vy >= 0)) {
+			vy = Settings.jumpVelocity;
+		}
+	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.red);
+		if (type == PlayerType.jump) {
+			g.setColor(Color.red);
+		} else if (type == PlayerType.fly) {
+			g.setColor(Color.blue);
+		}
 		g.fillRect((int)x, (int)y, (int)width, (int)height);
 	}
 
+	public float getPy() {
+		return py;
+	}
+	
 	public Shape getShape() {
 		return new Rectangle((int)x, (int)y, (int)width, (int)height);
+	}
+
+	public void setOnGround(boolean onGround) {
+		this.onGround = onGround;
 	}
 	
 	public boolean isOnGround() {
@@ -111,5 +102,10 @@ public class Player extends Entity {
 		px = x = spawnX;
 		py = y = spawnY;
 		ax = ay = vy = 0;
+		type = PlayerType.jump;
+	}
+
+	public void setType(PlayerType type) {
+		this.type = type;
 	}
 }

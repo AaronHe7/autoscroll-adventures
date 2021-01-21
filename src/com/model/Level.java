@@ -50,11 +50,6 @@ public class Level implements Serializable {
 		}
 	}
 
-	public void jump() {
-		if (player.isOnGround()) {
-			player.setVy(Settings.jumpVelocity);
-		}
-	}
 	
 	public void updateEntitiesCopy() {
 		if (entitiesCopy.size() > entities.size()) {

@@ -4,7 +4,10 @@ import java.awt.Graphics;
 import java.awt.Shape;
 import java.io.Serializable;
 
+import com.model.entity.Player;
+
 public abstract class Entity implements Serializable {
+	private static final long serialVersionUID = -1991686518264605976L;
 	protected float x, y, width, height;
 	// Velocities
 	protected float vx = 0, vy = 0;
@@ -32,6 +35,10 @@ public abstract class Entity implements Serializable {
 	public abstract void update();
 	public abstract void render(Graphics g);
 	public abstract Entity copy();
+	
+	public void handleCollision(Player p) {
+		
+	}
 
 	public float getX() {
 		return x;

@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import com.model.entity.Spike;
+import com.model.entity.PlayerType;
+import com.model.entity.Portal;
 import com.settings.Settings;
 
 public class LevelEditor {
@@ -13,7 +14,7 @@ public class LevelEditor {
 	int tileSize = Settings.tileSize;
 	LevelEditor(Level level) {
 		this.level = level;
-		currentEntity = new Spike(0, 0);
+		currentEntity = new Portal(0, 0, PlayerType.fly);
 	}
 	void render(Graphics g) {
 		// Draw grid lines

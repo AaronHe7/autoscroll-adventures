@@ -6,4 +6,5 @@ public class Settings {
 	public static float jumpVelocity = -11;
 	public static float scrollSpeed = 9;
 	public static int tileSize = 50;
+	public static int bufferClickTime = 30;
 }

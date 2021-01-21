@@ -20,7 +20,7 @@ public class Controller {
 	}
 	
 	public void registerMouseRelease(MouseEvent e) {
-		
+		model.registerRelease();
 	}
 
 	public void registerKeyInput(KeyEvent e) {
@@ -45,6 +45,5 @@ public class Controller {
 	}
 
 	public void registerKeyRelease(KeyEvent e) {
-		
 	}
 }
