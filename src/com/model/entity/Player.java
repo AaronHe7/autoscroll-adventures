@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.geom.Area;
 
 import com.model.Entity;
 import com.model.EntityId;
@@ -39,12 +38,19 @@ public class Player extends Entity {
 	}
 
 	public void update() {
+		if (x == spawnX && y == spawnY) {
+			level.attempts++;
+			System.out.println("Attempts: " + level.attempts);
+		}
 		px = x;
 		py = y;
 		x += vx + ax/2;
 		vx += ax;
 		y += vy + ay/2;
 		vy += ay;
+		if (vy > Settings.terminalVelocity) {
+			vy = Settings.terminalVelocity;
+		}
 		if (onGround) {
 			ay = 0;
 		} else {
@@ -56,10 +62,12 @@ public class Player extends Entity {
 	private void doCollision() {
 		onGround = false;
 		for (Entity e : level.getEntitiesCopy()) {
+			// cheats
+//			if (e.getId() != EntityId.Spike)
 			e.handleCollision(this);
 		}
 		if (x > level.getEndX()) {
-			reset();
+			level.setWin(true);
 		}
 	}
 

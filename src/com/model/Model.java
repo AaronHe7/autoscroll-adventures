@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import com.filestream.LevelLoader;
+import com.filestream.LevelSaver;
 import com.settings.Settings;
 import com.view.LevelRenderer;
 
@@ -17,6 +18,8 @@ public class Model {
 	private boolean buffering = false;
 	private int tick = 0;
 	private int endClickTick = -(int)1e9;
+	private int levelId = -1;
+	public boolean beaten[] = new boolean[3];
 	
 	public enum STATE {
 		menu(),
@@ -25,11 +28,29 @@ public class Model {
 	}
 
 	public Model() {
+		for (int i = 0; i < 3; i++) {
+			beaten[i] = false;
+		}
+		beaten[0] = beaten[1] = true;
+		menu = new Menu(this);
+	}
+	
+	public void loadLevel(int level) {
+		levelId = level;
 		LevelLoader ll = new LevelLoader();
-		//currentLevel = ll.loadLevel("level 1");
-//		currentLevel = new Level();
-//		levelEditor = new LevelEditor(currentLevel);
-//		levelRenderer = new LevelRenderer(currentLevel);
+		currentLevel = ll.loadLevel("level " + level);
+		if (currentLevel == null) {
+			currentLevel = new Level();
+		}
+		levelEditor = new LevelEditor(currentLevel);
+		levelRenderer = new LevelRenderer(currentLevel);
+		state = STATE.level;
+		tick = 0;
+	}
+	
+	public void saveLevel() {
+		LevelSaver ls = new LevelSaver();
+		ls.saveLevel(getCurrentLevel(), "level " + levelId);
 	}
 
 	public Level getCurrentLevel() {
@@ -41,18 +62,22 @@ public class Model {
 	}
 
 	public void update() {
-		tick++;
 		if (!clicking && tick - endClickTick == Settings.bufferClickTime) {
 			buffering = false;
 		}
 
 		if (state == STATE.level) {
+			tick++;
 			currentLevel.update();
 			if (clicking || buffering) {
 				if (buffering) {
 					buffering = false;
 				}
 				currentLevel.getPlayer().jump();
+			}
+			if (currentLevel.getWin()) {
+				state = STATE.menu;
+				beaten[levelId - 1] = true;
 			}
 		}
 	}
@@ -73,15 +98,24 @@ public class Model {
 	}
 
 	public void registerClick(Point p) {
-		clicking = true;
 		if (state == STATE.levelEditor) {
 			levelEditor.registerClick(p);
+		} else if (state == STATE.level && tick > 0) {
+			clicking = true;
+		} else if (state == STATE.menu) {
+			menu.registerClick(p);
 		}
 	}
 	
 	public void registerRelease() {
-		clicking = false;
-		buffering = true;
-		endClickTick = tick;
+		if (state == STATE.level && clicking) { 
+			clicking = false;
+			buffering = true;
+			endClickTick = tick;
+		}
+	}
+
+	public LevelEditor getLevelEditor() {
+		return levelEditor;
 	}
 }

@@ -18,10 +18,13 @@ public class Level implements Serializable {
 	private float endX = 0;
 	// The top-left location of the camera
 	float cameraX, cameraY;
+	private boolean win = false;
+
+	public int attempts = 0;
 	
 	public Level() {
 		addEntity(new Player(0, -Settings.tileSize, this));
-		addEntity(new Platform(-1000, 0, 3000, 1000));
+		addEntity(new Platform(-1000, 0, 16000, 1000));
 		updateEntitiesCopy();
 		cameraX = player.getX() - 200;
 		cameraY = player.getY() - View.HEIGHT/2 + Settings.tileSize/2;
@@ -43,15 +46,20 @@ public class Level implements Serializable {
 	
 	public void update() {
 		updateEntitiesCopy();
-		cameraX = player.getX() - 200;
-		cameraY = player.getY() - View.HEIGHT/2 + Settings.tileSize/2;
 		for (Entity entity : entitiesCopy) {
 			entity.update();
 		}
+		cameraX = player.getX() - 200;
+		cameraY = player.getY() - View.HEIGHT/2 + Settings.tileSize/2;
 	}
 
 	
 	public void updateEntitiesCopy() {
+		float px = 0, py = 0;
+		if (player != null) {
+			px = player.getX();
+			py = player.getY();
+		}
 		if (entitiesCopy.size() > entities.size()) {
 			resetCopy();
 		}
@@ -59,6 +67,10 @@ public class Level implements Serializable {
 			entitiesCopy.add(entities.get(i).copy());
 		}
 		player = (Player) entitiesCopy.get(0);
+		if (player != null) {
+			player.setX(px);
+			player.setY(py);
+		}
 	}
 
 	public ArrayList<Entity> getEntitiesCopy() {
@@ -99,5 +111,20 @@ public class Level implements Serializable {
 
 	public float getCameraY() {
 		return cameraY;
+	}
+	
+	public boolean getWin() {
+		return win;
+	}
+
+	public void setWin(boolean b) {
+		win = b;
+	}
+
+	public void setCameraX(float f) {
+		cameraX = f;
+	}
+	public void setCameraY(float f) {
+		cameraY = f;
 	}
 }
