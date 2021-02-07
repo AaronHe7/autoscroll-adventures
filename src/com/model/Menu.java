@@ -20,6 +20,8 @@ public class Menu {
 		g.setColor(Color.black);
 		g.setFont(new Font("Arial", 1, 100));
 		g.drawString("Autoscroll Adventures", View.WIDTH/2 - 500, View.HEIGHT/5);	
+		g.setFont(new Font("Arial", 50, 30));
+		g.drawString("Aaron He", View.WIDTH/2 - 80, View.HEIGHT*5/20);	
 		g.setFont(new Font("Arial", 100, 50));
 		for (int i = 1; i <= levels; i++) {
 			g.drawString("Level " + i + " " + (model.beaten[i - 1] ? "(done)" : ""), View.WIDTH/2 - 100, View.HEIGHT * (i + 1)/5);	

@@ -31,7 +31,6 @@ public class Model {
 		for (int i = 0; i < 3; i++) {
 			beaten[i] = false;
 		}
-		beaten[0] = beaten[1] = true;
 		menu = new Menu(this);
 	}
 	
